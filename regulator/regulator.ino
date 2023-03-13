@@ -291,10 +291,10 @@ void updateTimeFromServer() {
     if (timeClient.update()) {
       // Update the current time variables
       time_t currentTime = timeClient.getEpochTime();
-    // Convert the current time to a struct tm for easier manipulation
-    struct tm *currentLocalTime = localtime(&currentTime);
-    currentHour = currentLocalTime->tm_hour;
-    currentMinute = currentLocalTime->tm_min;
+      // Convert the current time to a struct tm for easier manipulation
+      struct tm *currentLocalTime = localtime(&currentTime);
+      currentHour = currentLocalTime->tm_hour;
+      currentMinute = currentLocalTime->tm_min;
     } else {
       // Handle the case where the update fails
       Serial.println("Error updating time from server!");
