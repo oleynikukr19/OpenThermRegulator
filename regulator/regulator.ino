@@ -44,7 +44,7 @@ float dhw_temperature;
 float boiler_temperature;
 
 const char ssid[] = "UniFi UAP-AC-LR";
-const char password[] =  "JtwRft@1203";
+const char password[] =  "";
 
 millisDelay updateDelay;
 DateTime now;
