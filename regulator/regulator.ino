@@ -237,20 +237,26 @@ void loop() {
 }
 
 void connectToWiFi(const char* ssid, const char* pwd) {
-    // delete old config
-    WiFi.disconnect(true);
- 
-    Serial.println("Waiting for WIFI connection...");
- 
-    //Initiate connection
-    WiFi.begin(ssid, pwd);
- 
-    while (WiFi.status() != WL_CONNECTED) {
-      tft.drawString("Connecting to WiFi", 20, 40);
-      delay(500);
-      tft.fillScreen(TFT_WHITE);
-    }
-    delay(1000);
+  // delete old config
+  WiFi.disconnect(true);
+
+  Serial.println("Waiting for WIFI connection...");
+
+  //Initiate connection
+  WiFi.begin(ssid, pwd);
+
+  int timeout = 10000; // 10 seconds timeout
+  unsigned long start = millis();
+
+  while (WiFi.status() != WL_CONNECTED && (millis() - start) < timeout) {
+    delay(500);
+  }
+
+  if (WiFi.status() == WL_CONNECTED) {
+    Serial.println("WiFi connected");
+  } else {
+    Serial.println("WiFi connection timeout");
+  }
 }
 
 void handleTimeClientUpdateRepeat() {
