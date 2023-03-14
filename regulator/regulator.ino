@@ -1,26 +1,26 @@
 #include <TFT_eSPI.h>
 #include <Arduino.h>
-#include <millisDelay.h>
 #include <OpenTherm.h>
 #include "rpcWiFi.h"
 #include <NTPClient.h>
 #include "DateTime.h"
-#include <Wire.h>
 #include "RTC_SAMD51.h"
 
-TFT_eSPI tft;
+TFT_eSPI tft; // Initialize tft
 
 const int OT_TX_PIN = D0;
 const int OT_RX_PIN = D1;
 
-// OpenTherm initialization
-OpenTherm ot(D0, D1);
+OpenTherm ot(D0, D1);                   // OpenTherm initialization
+
+// Heating
 int SET_BOILER_TEMP = 33;               // Set temperature of boiler in degrees Celsius
 const int MAX_BOILER_TEMP = 60;         // Max temperature of boiler in degrees Celsius
 const int MIN_BOILER_TEMP = 20;         // Min temperature of boiler in degrees Celsius
 const int BURNER_CHANGE_CONDITION = 90; // in seconds
 bool chTimeTable = true;
 
+// Domestic hot water
 int SET_DHW_TEMP = 55;       // Set Domestic hot water temperature in degrees Celsius
 const int MAX_DHW_TEMP = 70; // Max domestic hot water temperature in degrees Celsius
 const int MIN_DHW_TEMP = 20; // // Min domestic hot water temperature in degrees Celsius
@@ -48,10 +48,6 @@ float boiler_temperature;
 
 const char ssid[] = "UniFi UAP-AC-LR";
 const char password[] = "";
-
-millisDelay updateDelay;
-DateTime now;
-// int currentHour, currentMinute;
 
 // Initialize the RTC and NTP client objects
 RTC_SAMD51 rtc;
@@ -86,9 +82,9 @@ void setup()
   pinMode(WIO_5S_LEFT, INPUT_PULLUP);
   pinMode(WIO_5S_RIGHT, INPUT_PULLUP);
 
-  rtc.begin(); // Initialize the RTC
-  connectToWiFi(ssid, password);
-  setTimeFromNTP(); // Set the initial time from NTP
+  rtc.begin();                   // Initialize the RTC
+  connectToWiFi(ssid, password); // Connect to WiFi
+  setTimeFromNTP();              // Set the initial time from NTP
 
   tft.setTextSize(2.8);
   tft.fillScreen(TFT_WHITE);
@@ -96,12 +92,6 @@ void setup()
   ot.begin(handleInterrupt);
 
   ts = millis();
-}
-
-// Helper function to check response status
-bool isValidResponse(int response, OpenThermResponseStatus responseStatus)
-{
-  return ot.isValidResponse(response) && responseStatus == OpenThermResponseStatus::SUCCESS && !ot.isFault(response);
 }
 
 void loop()
@@ -357,4 +347,11 @@ void updateHotWaterStatus(bool dhwTimeTable, int currentHour)
       enableHotWater = false;
     }
   }
+}
+
+
+// Helper function to check response status
+bool isValidResponse(int response, OpenThermResponseStatus responseStatus)
+{
+  return ot.isValidResponse(response) && responseStatus == OpenThermResponseStatus::SUCCESS && !ot.isFault(response);
 }
