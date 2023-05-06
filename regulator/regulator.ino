@@ -18,7 +18,7 @@ int SET_BOILER_TEMP = 33;               // Set temperature of boiler in degrees 
 const int MAX_BOILER_TEMP = 60;         // Max temperature of boiler in degrees Celsius
 const int MIN_BOILER_TEMP = 20;         // Min temperature of boiler in degrees Celsius
 const int BURNER_CHANGE_CONDITION = 90; // in seconds
-bool chTimeTable = true;
+bool chTimeTable = false;
 
 // Domestic hot water
 int SET_DHW_TEMP = 55;       // Set Domestic hot water temperature in degrees Celsius
